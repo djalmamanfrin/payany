@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Providers;
+namespace PayAny\Providers;
 
-use App\Models\User;
+use PayAny\Models\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 

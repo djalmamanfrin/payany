@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace PayAny\Events;
 
 class ExampleEvent extends Event
 {

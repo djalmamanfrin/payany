@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace PayAny\Http\Middleware;
 
 use Closure;
 

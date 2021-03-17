@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace PayAny\Events;
 
 use Illuminate\Queue\SerializesModels;
 
