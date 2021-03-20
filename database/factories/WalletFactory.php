@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use PayAny\Models\User;
+use PayAny\Models\Wallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class UserFactory extends Factory
+class WalletFactory extends Factory
 {
-    protected $model = User::class;
+    protected $model = Wallet::class;
 
     public function definition()
     {
