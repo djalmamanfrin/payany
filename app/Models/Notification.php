@@ -10,5 +10,5 @@ class Notification extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $casts = ['date' => 'Timestamp'];
-    protected $fillable = ['user_id', 'type', 'message'];
+    protected $fillable = ['transaction_id', 'payload', 'status_code'];
 }

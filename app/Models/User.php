@@ -10,14 +10,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Laravel\Lumen\Auth\Authorizable;
 
-abstract class User extends Model implements AuthenticatableContract, AuthorizableContract
+class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
     use Authenticatable, Authorizable, HasFactory;
 
     protected $table = 'users';
     protected $primaryKey = 'id';
     public $timestamps = false;
-    protected $hidden = ['password'];
+    protected $fillable = ['wallet_id', 'name', 'document', 'email', 'password'];
     protected $casts = ['date' => 'Timestamp'];
 
     public function wallet(): Wallet
@@ -32,6 +32,6 @@ abstract class User extends Model implements AuthenticatableContract, Authorizab
 
     public function transactions(): Collection
     {
-        return $this->hasMany(TransactionEvent::class)->get();
+        return $this->hasMany(Transaction::class)->get();
     }
 }

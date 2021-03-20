@@ -4,11 +4,11 @@ namespace PayAny\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TransactionStatus extends Model
+class Authorization extends Model
 {
-    protected $table = 'transactions_status';
+    protected $table = 'authorizations';
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $casts = ['date' => 'Timestamp'];
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['transaction_id', 'payload', 'status_code'];
 }
