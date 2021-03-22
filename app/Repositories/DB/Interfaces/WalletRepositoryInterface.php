@@ -6,7 +6,8 @@ use PayAny\Models\Wallet;
 
 interface WalletRepositoryInterface
 {
-    public function fill(array $values): Wallet;
-    public function credit(): bool;
-    public function debit(): bool;
+    public function fill(array $values);
+    public function turnValueIntoNegative();
+    public function getFunds(int $walletId): float;
+    public function store(): bool;
 }

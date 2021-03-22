@@ -9,16 +9,25 @@ use PayAny\Repositories\DB\Interfaces\WalletRepositoryInterface;
 
 class Credit
 {
-    private WalletRepositoryInterface $repository;
+    protected WalletRepositoryInterface $repository;
 
     public function __construct(WalletRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }
 
+    public function hasFunds(int $walletId, float $value): bool
+    {
+        $funds = $this->repository->getFunds($walletId);
+        return $value > $funds;
+    }
+
+    public function fill(array $values) {
+        $this->repository->fill($values);
+    }
+
     public function dispatch(): bool
     {
-//        $this->repository->fill($wallet->getFillable());
-        return $this->repository->credit();
+        return $this->repository->store();
     }
 }

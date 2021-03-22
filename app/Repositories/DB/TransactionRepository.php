@@ -2,8 +2,6 @@
 
 namespace PayAny\Repositories\DB;
 
-use Illuminate\Http\Response;
-use InvalidArgumentException;
 use PayAny\Models\Transaction;
 use PayAny\Repositories\DB\Interfaces\TransactionRepositoryInterface;
 
@@ -16,27 +14,26 @@ class TransactionRepository implements TransactionRepositoryInterface
         $this->model = $model;
     }
 
-    public function fill(array $values): Transaction
+    public function getFill(): array
     {
-        return $this->model->fill($values);
+        return $this->model->toArray();
     }
 
-    private function expectInvalidArgumentExceptionIfFillableEmpty()
+    public function fill(array $values)
     {
-        if (empty($this->model->toArray())) {
-            $error = 'Fillable of ' . Transaction::class . 'class empty';
-            throw new InvalidArgumentException($error, Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
+        $this->model = $this->model->newInstance($values);
     }
 
-    public function store(): bool
+    public function update(int $transactionId, string $status_id): bool
     {
-        $this->expectInvalidArgumentExceptionIfFillableEmpty();
-        return $this->model->save();
+        return $this->model->newQuery()
+            ->where(['id' => $transactionId])
+            ->update(['status_id' => $status_id]);
     }
-    public function update(): bool
+
+    public function store(): Transaction
     {
-        $this->expectInvalidArgumentExceptionIfFillableEmpty();
-        return $this->model->update();
+        $values = $this->getFill();
+        return Transaction::create($values);
     }
 }

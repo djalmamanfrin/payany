@@ -35,19 +35,11 @@ class UserRepository implements UserRepositoryInterface
             ->save();
     }
 
-    public function findPayerOrFail(int $id): User
+    public function isEntrepreneur(int $id): bool
     {
         return $this->builder()
-            ->whereNotNull('cpf')
-            ->whereNull('cnpj')
-            ->findOrFail($id)
-            ->get();
-    }
-
-    public function findPayeeOrFail(int $id): User
-    {
-        return $this->builder()
-            ->findOrFail($id)
-            ->get();
+            ->where('id', '=', $id)
+            ->whereRaw('LENGTH(document) = ?', [$this->model::CPF_DOCUMENT_LENGTH])
+            ->exists();
     }
 }
