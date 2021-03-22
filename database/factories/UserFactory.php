@@ -2,28 +2,22 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use PayAny\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
     protected $model = User::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition()
     {
+        $cnpj = $this->faker->unique()->bothify('########0001##');
+        $cpf =  $this->faker->unique()->bothify('0##########');
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
+            'password' => $this->faker->password,
+            'document' => $this->faker->randomElement([$cnpj, $cpf]),
         ];
     }
 }

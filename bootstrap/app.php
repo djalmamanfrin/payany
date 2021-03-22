@@ -23,9 +23,8 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->withFacades();
-
-// $app->withEloquent();
+ $app->withFacades();
+ $app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -40,12 +39,12 @@ $app = new Laravel\Lumen\Application(
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Exceptions\Handler::class
+    PayAny\Exceptions\Handler::class
 );
 
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
-    App\Console\Kernel::class
+    PayAny\Console\Kernel::class
 );
 
 /*
@@ -73,11 +72,11 @@ $app->configure('app');
 */
 
 // $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
+//     PayAny\Http\Middleware\ExampleMiddleware::class
 // ]);
 
 // $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
+//     'auth' => PayAny\Http\Middleware\Authenticate::class,
 // ]);
 
 /*
@@ -91,9 +90,9 @@ $app->configure('app');
 |
 */
 
-// $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+// $app->register(PayAny\Providers\AppServiceProvider::class);
+// $app->register(PayAny\Providers\AuthServiceProvider::class);
+// $app->register(PayAny\Providers\EventServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -107,7 +106,7 @@ $app->configure('app');
 */
 
 $app->router->group([
-    'namespace' => 'App\Http\Controllers',
+    'namespace' => 'PayAny\Http\Controllers',
 ], function ($router) {
     require __DIR__.'/../routes/web.php';
 });
