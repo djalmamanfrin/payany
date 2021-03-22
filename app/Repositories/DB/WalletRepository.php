@@ -6,11 +6,11 @@ use Illuminate\Http\Response;
 use InvalidArgumentException;
 use PayAny\Models\Transaction;
 use PayAny\Models\WalletTransactions;
-use PayAny\Repositories\DB\Interfaces\GetFillAndStoreInterface;
+use PayAny\Repositories\DB\Interfaces\CreditInterface;
+use PayAny\Repositories\DB\Interfaces\DebitInterface;
 use PayAny\Repositories\DB\Interfaces\GetFundsInterface;
-use PayAny\Repositories\DB\Interfaces\TurnValueIntoNegativeInterface;
 
-class WalletRepository implements GetFillAndStoreInterface, TurnValueIntoNegativeInterface, GetFundsInterface
+class WalletRepository implements DebitInterface, CreditInterface, GetFundsInterface
 {
     private WalletTransactions $model;
 

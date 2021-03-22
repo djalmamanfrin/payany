@@ -2,10 +2,8 @@
 
 namespace PayAny\Repositories\DB\Interfaces;
 
-interface WalletRepositoryInterface
+interface CreditInterface
 {
     public function fill(array $values);
-    public function turnValueIntoNegative();
-    public function getFunds(int $walletId): float;
     public function store(): bool;
 }

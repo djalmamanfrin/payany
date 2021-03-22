@@ -2,9 +2,9 @@
 
 namespace PayAny\Repositories\DB\Interfaces;
 
-use PayAny\Models\Wallet;
-
-interface TurnValueIntoNegativeInterface
+interface DebitInterface
 {
+    public function fill(array $values);
     public function turnValueIntoNegative();
+    public function store(): bool;
 }
