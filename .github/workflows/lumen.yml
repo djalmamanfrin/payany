@@ -38,4 +38,6 @@ jobs:
       - name: Execute tests (Unit and Feature tests) via PHPUnit
         run: vendor/bin/phpunit
         env:
+          APP_ENV: testing
+          QUEUE_CONNECTION: database
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
