@@ -50,7 +50,8 @@ class UserController extends Controller
         try {
             $fields = config('validator.user.transfer.fields');
             $messages = config('validator.user.transfer.messages');
-            $this->validate($request, $fields, $messages);
+//            $this->validate($request, $fields, $messages);
+
             $isEntrepreneur = $this->service->isEntrepreneur($id);
             if ($isEntrepreneur) {
                 $error = 'Entrepreneur paying is not allowed to transfer';
