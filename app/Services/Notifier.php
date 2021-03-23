@@ -3,15 +3,15 @@
 namespace PayAny\Services;
 
 use PayAny\Repositories\API\Interfaces\NotifierApiInterface;
-use PayAny\Repositories\DB\Interfaces\NotificationRepositoryInterface;
+use PayAny\Repositories\DB\Interfaces\NotificationInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class Notifier
 {
-    private NotificationRepositoryInterface $repository;
+    private NotificationInterface $repository;
     private NotifierApiInterface $notifier;
 
-    public function __construct(NotificationRepositoryInterface $repository, NotifierApiInterface $notifier)
+    public function __construct(NotificationInterface $repository, NotifierApiInterface $notifier)
     {
         $this->repository = $repository;
         $this->notifier = $notifier;
@@ -27,8 +27,8 @@ class Notifier
         $this->repository->fill($values);
     }
 
-    public function store()
+    public function store(): bool
     {
-        $this->repository->store();
+        return $this->repository->store();
     }
 }

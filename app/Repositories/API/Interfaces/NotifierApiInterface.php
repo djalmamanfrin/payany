@@ -7,5 +7,4 @@ use Psr\Http\Message\ResponseInterface;
 interface NotifierApiInterface
 {
     public function notifyPayee(): ResponseInterface;
-    public function store(ResponseInterface $response): int;
 }

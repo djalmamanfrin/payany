@@ -5,14 +5,15 @@ namespace PayAny\Services;
 
 
 use PayAny\Repositories\API\Interfaces\AuthorizerApiInterface;
+use PayAny\Repositories\DB\Interfaces\AuthorizationInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class Authorizer
 {
-    private AuthorizationRepositoryInterface $repository;
+    private AuthorizationInterface $repository;
     private AuthorizerApiInterface $authorizer;
 
-    public function __construct(AuthorizationRepositoryInterface $repository, AuthorizerApiInterface $authorizer)
+    public function __construct(AuthorizationInterface $repository, AuthorizerApiInterface $authorizer)
     {
         $this->repository = $repository;
         $this->authorizer = $authorizer;
