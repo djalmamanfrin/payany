@@ -10,7 +10,7 @@ class UserControllerTest extends TestCase
     public function testTransfer()
     {
         $id = 7;
-        $response = $this->call('POST', "api/v1/users/{$id}/transfer", ['payee_id' => 8, 'value' => 10.56]);
+        $response = $this->call('POST', "api/v1/users/{$id}/transfer", ['payee_id' => 8]);
         $this->assertEquals(Response::HTTP_CREATED, $response->status());
         $this->seeJsonStructure([]);
     }

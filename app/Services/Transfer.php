@@ -21,27 +21,11 @@ class Transfer
     {
         $this->repository = $repository;
     }
-
-    /**
-     * @throws \Illuminate\Validation\ValidationException
-     */
+    
     public function fill(array $values)
     {
-        // TODO Implementar RequestMiddleware
         $values['type'] = self::TRANSFER;
-//        $this->validate($values);
         $this->repository->fill($values);
-    }
-
-    /**
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    private function validate(array $params)
-    {
-        $fields = config('validator.transfer.fields');
-        $messages = config('validator.transfer.messages');
-        $validator = Validator::make($params, $fields, $messages);
-        $validator->validate();
     }
 
     public function store(): Transaction
