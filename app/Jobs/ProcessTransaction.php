@@ -80,7 +80,7 @@ class ProcessTransaction extends Job
                 'type' => $this->transaction->type,
                 'value' => $this->transaction->value
             ]);
-            $status_id = $debit->dispatch()
+            $status_id = $debit->store()
                 ? Status::PAYER_DEBITED
                 : Status::PAYER_NOT_DEBITED;
             $transaction->update($this->transaction->id, $status_id);
@@ -100,7 +100,7 @@ class ProcessTransaction extends Job
                 'type' => $this->transaction->type,
                 'value' => $this->transaction->value
             ]);
-            $status_id = $credit->dispatch()
+            $status_id = $credit->store()
                 ? Status::PAYEE_CREDITED
                 : Status::PAYEE_NOT_CREDITED;
             $transaction->update($this->transaction->id, $status_id);

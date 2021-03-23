@@ -12,7 +12,8 @@ $router->group(['prefix' => 'users'], function () use ($router) {
         'uses' => 'UserController@store']);
 
     $router->group(['prefix' => '{id}'], function ($router) {
-        $router->get('/',              ['as' => 'user.get', 'uses' => 'UserController@get']);
-        $router->post('/transfer',       ['as' => 'user.transfer', 'uses' => 'UserController@transfer']);
+        $router->get('/',         ['as' => 'user.get', 'uses' => 'UserController@get']);
+        $router->get('/balance',  ['as' => 'user.balance', 'uses' => 'UserController@balance']);
+        $router->post('/transfer',['as' => 'user.transfer', 'uses' => 'UserController@transfer']);
     });
 });

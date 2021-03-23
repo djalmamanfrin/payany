@@ -5,41 +5,54 @@ namespace PayAny\Repositories\DB;
 use Illuminate\Http\Response;
 use InvalidArgumentException;
 use PayAny\Models\Transaction;
-use PayAny\Models\Wallet;
-use PayAny\Repositories\DB\Interfaces\WalletRepositoryInterface;
+use PayAny\Models\WalletTransactions;
+use PayAny\Repositories\DB\Interfaces\CreditInterface;
+use PayAny\Repositories\DB\Interfaces\DebitInterface;
+use PayAny\Repositories\DB\Interfaces\BalanceInterface;
 
-class WalletRepository implements WalletRepositoryInterface
+class WalletRepository implements DebitInterface, CreditInterface, BalanceInterface
 {
-    private Wallet $model;
+    private WalletTransactions $model;
 
-    public function __construct(Wallet $model)
+    public function __construct(WalletTransactions $model)
     {
         $this->model = $model;
     }
 
-    public function fill(array $values): Wallet
+    public function getFill(): array
     {
-        return $this->model->fill($values);
+        return $this->model->toArray();
+    }
+
+    public function fill(array $values)
+    {
+        $this->model = $this->model->newInstance($values);
     }
 
     private function expectInvalidArgumentExceptionIfFillableEmpty()
     {
-        if (empty($this->model->getFillable())) {
+        if (empty($this->model->toArray())) {
             $error = 'Fillable of ' . Transaction::class . 'class empty';
             throw new InvalidArgumentException($error, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
     }
 
-    public function credit(): bool
+    public function getBalance(int $walletId): float
     {
-        $this->expectInvalidArgumentExceptionIfFillableEmpty();
-        return $this->model->save();
+        return $this->model->newQuery()
+            ->where('wallet_id', '=', $walletId)
+            ->sum('value');
     }
 
-    public function debit(): bool
+    public function turnValueIntoNegative()
     {
         $this->expectInvalidArgumentExceptionIfFillableEmpty();
         $this->model->turnValueIntoNegative();
+    }
+
+    public function store(): bool
+    {
+        $this->expectInvalidArgumentExceptionIfFillableEmpty();
         return $this->model->save();
     }
 }

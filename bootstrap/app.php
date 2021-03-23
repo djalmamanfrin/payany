@@ -59,6 +59,9 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('api');
+$app->configure('queue');
+$app->configure('validator');
 
 /*
 |--------------------------------------------------------------------------
@@ -90,8 +93,8 @@ $app->configure('app');
 |
 */
 
-// $app->register(PayAny\Providers\AppServiceProvider::class);
-// $app->register(PayAny\Providers\AuthServiceProvider::class);
+ $app->register(PayAny\Providers\AppServiceProvider::class);
+ $app->register(PayAny\Providers\AppRepositoryProvider::class);
 // $app->register(PayAny\Providers\EventServiceProvider::class);
 
 /*

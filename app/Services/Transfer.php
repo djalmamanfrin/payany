@@ -4,25 +4,22 @@ namespace PayAny\Services;
 
 use Exception;
 use Illuminate\Http\Response;
-use PayAny\Jobs\AuthorizeJob;
-use PayAny\Jobs\CreditPayeeJob;
-use PayAny\Jobs\DebitPayerJob;
-use PayAny\Jobs\NotifierPayeeJob;
+use Illuminate\Support\Facades\{Queue, Validator};
+use PayAny\Jobs\ProcessTransaction;
 use PayAny\Models\Status;
-use PayAny\Models\Transaction as TransactionModel;
-use Illuminate\Support\Facades\{Bus, DB, Queue, Validator};
+use PayAny\Models\Transaction;
 use InvalidArgumentException;
-use Throwable;
+use PayAny\Repositories\DB\Interfaces\TransactionRepositoryInterface;
 
 class Transfer
 {
     const TRANSFER = 'transfer';
 
-    private TransactionModel $model;
+    private TransactionRepositoryInterface $repository;
 
-    public function __construct(TransactionModel $model)
+    public function __construct(TransactionRepositoryInterface $repository)
     {
-        $this->model = $model;
+        $this->repository = $repository;
     }
 
     /**
@@ -30,9 +27,10 @@ class Transfer
      */
     public function fill(array $values)
     {
+        // TODO Implementar RequestMiddleware
         $values['type'] = self::TRANSFER;
 //        $this->validate($values);
-        $this->model->fill($values);
+        $this->repository->fill($values);
     }
 
     /**
@@ -46,48 +44,46 @@ class Transfer
         $validator->validate();
     }
 
-    public function store()
+    public function store(): Transaction
     {
-        if (empty($this->model->toArray())) {
-            $error = 'Fillable of ' . \PayAny\Models\Transaction::class . 'class empty';
+        if (empty($this->repository->getFill())) {
+            $error = 'Fillable of ' . Transaction::class . 'class empty';
             throw new InvalidArgumentException($error, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        if (! $this->model->save()) {
-            $error = 'Error to store Transaction Event';
+        $transaction = $this->repository->store();
+        if (! $transaction instanceof Transaction) {
+            $error = 'Error to store Transfer Event';
             throw new InvalidArgumentException($error, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+        return $transaction;
     }
 
     public function dispatch()
     {
-        try {
-            DB::beginTransaction();
-            $this->store();
-//            $isPushed =  Queue::push(new ProcessTransaction());
-            $transactionId = $this->model->getId();
-            Bus::chain([
-                new AuthorizeJob($transactionId),
-                new DebitPayerJob($transactionId),
-                new CreditPayeeJob($transactionId),
-                new NotifierPayeeJob($transactionId),
-            ])->catch(function (Throwable $e) {
-                throw new Exception('Queue not processed', Response::HTTP_UNPROCESSABLE_ENTITY);
-            })->dispatch();
-            DB::commit();
-        } catch (Exception $e) {
-            DB::rollBack();
-            throw $e;
+        $model = $this->store();
+        $isPushed = Queue::push(new ProcessTransaction($model));
+        if (! $isPushed) {
+            throw new Exception('Queue not processed', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+//        TODO conversaremos a respeito https://github.com/laravel/lumen-framework/issues/1163
+//        Bus::chain([
+//            new AuthorizeJob($transactionId),
+//            new DebitPayerJob($transactionId),
+//            new CreditPayeeJob($transactionId),
+//            new NotifierPayeeJob($transactionId),
+//        ])->catch(function (Throwable $e) {
+//            throw new Exception('Queue not processed', Response::HTTP_UNPROCESSABLE_ENTITY);
+//        })->name("Processing Transaction: {$transactionId}")
+//        ->dispatch();
+
     }
 
-    public function update(int $transactionId, string $status): bool
+    public function update(int $id, string $status_id): bool
     {
-        if (! in_array($status, Status::status())) {
+        if (! in_array($status_id, Status::status())) {
             $error = 'Status not found in ' . Status::class;
             throw new InvalidArgumentException($error, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        return $this->model->newQuery()
-            ->firstOrFail($transactionId)
-            ->update(['status' => $status]);
+        return $this->repository->update($id, $status_id);
     }
 }

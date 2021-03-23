@@ -3,22 +3,31 @@
 
 namespace PayAny\Services;
 
-
-use PayAny\Models\Wallet;
-use PayAny\Repositories\DB\Interfaces\WalletRepositoryInterface;
+use Illuminate\Http\Response;
+use InvalidArgumentException;
+use PayAny\Models\Transaction;
+use PayAny\Repositories\DB\Interfaces\DebitInterface;
 
 class Debit
 {
-    private WalletRepositoryInterface $repository;
+    private DebitInterface $repository;
 
-    public function __construct(WalletRepositoryInterface $repository)
+    public function __construct(DebitInterface $repository)
     {
         $this->repository = $repository;
     }
 
-    public function dispatch(): bool
+    public function fill(array $values) {
+        $this->repository->fill($values);
+    }
+
+    public function store(): bool
     {
-//        $this->repository->fill($wallet->getFillable());
-        return $this->repository->debit();
+        if (empty($this->repository->getFill())) {
+            $error = 'Fill method is empty';
+            throw new InvalidArgumentException($error, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        $this->repository->turnValueIntoNegative();
+        return $this->repository->store();
     }
 }

@@ -24,10 +24,10 @@ class TransactionRepository implements TransactionRepositoryInterface
         $this->model = $this->model->newInstance($values);
     }
 
-    public function update(int $transactionId, string $status_id): bool
+    public function update(int $id, string $status_id): bool
     {
         return $this->model->newQuery()
-            ->where(['id' => $transactionId])
+            ->where(['id' => $id])
             ->update(['status_id' => $status_id]);
     }
 
