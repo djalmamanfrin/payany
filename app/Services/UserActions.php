@@ -24,10 +24,16 @@ class UserActions
         return $this->repository->store($params);
     }
 
-    public function hasFunds(Credit $credit, int $id, float $value): bool
+    public function balance(Balance $balance, int $id): float
     {
         $walletId = $this->get($id)->wallet()->id;
-        return $credit->hasFunds($walletId, $value);
+        return $balance->get($walletId);
+    }
+
+    public function hasBalance(Balance $balance, int $id, float $value): bool
+    {
+        $walletId = $this->get($id)->wallet()->id;
+        return $balance->has($walletId, $value);
     }
 
     public function isEntrepreneur(int $id): bool

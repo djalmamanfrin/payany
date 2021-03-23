@@ -1,32 +1,23 @@
 <?php
 
-
 namespace PayAny\Services;
 
+use PayAny\Repositories\DB\Interfaces\CreditInterface;
 
-use PayAny\Models\Wallet;
-use PayAny\Repositories\DB\Interfaces\WalletRepositoryInterface;
-
-class Credit
+class Credit implements CreditInterface
 {
-    protected WalletRepositoryInterface $repository;
+    protected CreditInterface $repository;
 
-    public function __construct(WalletRepositoryInterface $repository)
+    public function __construct(CreditInterface $repository)
     {
         $this->repository = $repository;
-    }
-
-    public function hasFunds(int $walletId, float $value): bool
-    {
-        $funds = $this->repository->getFunds($walletId);
-        return $value > $funds;
     }
 
     public function fill(array $values) {
         $this->repository->fill($values);
     }
 
-    public function dispatch(): bool
+    public function store(): bool
     {
         return $this->repository->store();
     }

@@ -5,7 +5,6 @@ namespace PayAny\Services;
 
 
 use PayAny\Repositories\API\Interfaces\AuthorizerApiInterface;
-use PayAny\Repositories\DB\Interfaces\AuthorizationRepositoryInterface;
 use Psr\Http\Message\ResponseInterface;
 
 class Authorizer
