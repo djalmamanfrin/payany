@@ -21,12 +21,12 @@ class Transaction extends Model
 
     public function payer(): User
     {
-        return $this->belongsTo(User::class, 'payer', 'id')->get()->first();
+        return $this->belongsTo(User::class, 'payer_id', 'id')->get()->first();
     }
 
     public function payee(): User
     {
-        return $this->belongsTo(User::class, 'payee', 'id')->get()->first();
+        return $this->belongsTo(User::class, 'payee_id', 'id')->get()->first();
     }
 
     public function status(): Status

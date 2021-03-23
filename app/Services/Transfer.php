@@ -3,8 +3,6 @@
 namespace PayAny\Services;
 
 use Exception;
-use Illuminate\Bus\Batchable;
-use Illuminate\Bus\Queueable;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\{Queue, Validator};
 use PayAny\Jobs\ProcessTransaction;
@@ -15,8 +13,6 @@ use PayAny\Repositories\DB\Interfaces\TransactionRepositoryInterface;
 
 class Transfer
 {
-    use Batchable, Queueable;
-
     const TRANSFER = 'transfer';
 
     private TransactionRepositoryInterface $repository;

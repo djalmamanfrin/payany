@@ -2,9 +2,7 @@
 
 namespace PayAny\Jobs;
 
-use Illuminate\Bus\Queueable;
 use Illuminate\Http\Response;
-use Illuminate\Queue\SerializesModels;
 use PayAny\Models\Status;
 use PayAny\Models\Transaction;
 use PayAny\Services\Authorizer;
