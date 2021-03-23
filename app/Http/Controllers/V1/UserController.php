@@ -48,6 +48,9 @@ class UserController extends Controller
     public function transfer(int $id, Request $request, Transfer $transfer, Balance $balance): JsonResponse
     {
         try {
+            $fields = config('validator.user.transfer.fields');
+            $messages = config('validator.user.transfer.messages');
+            $this->validate($request, $fields, $messages);
             $isEntrepreneur = $this->service->isEntrepreneur($id);
             if ($isEntrepreneur) {
                 $error = 'Entrepreneur paying is not allowed to transfer';
