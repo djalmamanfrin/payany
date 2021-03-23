@@ -9,7 +9,7 @@ class WalletTransactions extends Model
 {
     use HasFactory;
 
-    protected $table = 'wallets';
+    protected $table = 'wallet_transactions';
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $casts = ['date' => 'Timestamp'];
