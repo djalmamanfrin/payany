@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use InvalidArgumentException;
 use PayAny\Http\Controllers\Controller;
+use PayAny\Services\Balance;
 use PayAny\Services\Credit;
 use PayAny\Services\Transfer;
 use PayAny\Services\UserActions;
@@ -41,21 +42,21 @@ class UserController extends Controller
         }
     }
 
-    public function transfer(int $id, Request $request, Transfer $transfer, Credit $credit): JsonResponse
+    public function transfer(int $id, Request $request, Transfer $transfer, Balance $balance): JsonResponse
     {
         try {
             $isEntrepreneur = $this->service->isEntrepreneur($id);
-            if (! $isEntrepreneur) {
+            if ($isEntrepreneur) {
                 $error = 'Entrepreneur paying is not allowed to transfer';
                 throw new InvalidArgumentException($error, Response::HTTP_UNPROCESSABLE_ENTITY);
             }
 
             $value = $request->get('value');
-            $hasFunds = $this->service->hasFunds($credit, $id, $value);
-            if (! $hasFunds) {
-                $error = 'Payer has no funds to transfer';
-                throw new InvalidArgumentException($error, Response::HTTP_UNPROCESSABLE_ENTITY);
-            }
+            $hasBalance = $this->service->hasBalance($balance, $id, $value);
+//            if (! $hasBalance) {
+//                $error = 'Payer has no funds to transfer';
+//                throw new InvalidArgumentException($error, Response::HTTP_UNPROCESSABLE_ENTITY);
+//            }
 
             $transfer->fill([
                 'payer_id' => $id,
@@ -76,8 +77,13 @@ class UserController extends Controller
         ]);
     }
 
-    public function getBalance(int $id)
+    public function balance(int $id, Balance $balance)
     {
-
+        try {
+           $userBalance = $this->service->balance($balance, $id);
+            return responseHandler()->success(Response::HTTP_OK, ['balance' => $userBalance]);
+        } catch (Throwable $e) {
+            return responseHandler()->error($e);
+        }
     }
 }
