@@ -28,7 +28,7 @@ class NewTransactionTest extends TestCase
     /**
      * @dataProvider payload
      */
-    public function testExpectInvalidArgumentExceptionIfStoreMethodReturnIsFalse(array $payload)
+    public function ExpectInvalidArgumentExceptionIfStoreMethodReturnIsFalse(array $payload)
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -44,7 +44,7 @@ class NewTransactionTest extends TestCase
     /**
      * @dataProvider payload
      */
-    public function testExpectHttpUnprocessableEntityStatusCodeIfStoreMethodReturnIsFalse(array $payload)
+    public function ExpectHttpUnprocessableEntityStatusCodeIfStoreMethodReturnIsFalse(array $payload)
     {
         $this->expectExceptionCode(Response::HTTP_UNPROCESSABLE_ENTITY);
 
@@ -60,7 +60,7 @@ class NewTransactionTest extends TestCase
     /**
      * @dataProvider payload
      */
-    public function testPayerColumnRequiredValidation(array $payload)
+    public function PayerColumnRequiredValidation(array $payload)
     {
         unset($payload['payer']);
         $this->expectException(ValidationException::class);
@@ -78,7 +78,7 @@ class NewTransactionTest extends TestCase
     /**
      * @dataProvider payload
      */
-    public function testPayeeColumnRequiredValidation(array $payload)
+    public function PayeeColumnRequiredValidation(array $payload)
     {
         unset($payload['payee']);
         $this->expectException(ValidationException::class);
@@ -96,7 +96,7 @@ class NewTransactionTest extends TestCase
     /**
      * @dataProvider payload
      */
-    public function testValueColumnRequiredValidation(array $payload)
+    public function ValueColumnRequiredValidation(array $payload)
     {
         unset($payload['value']);
         $this->expectException(ValidationException::class);
@@ -114,7 +114,7 @@ class NewTransactionTest extends TestCase
     /**
      * @dataProvider payload
      */
-    public function testIfReturnOfMethodAuthorizerIsAnAuthorizerInterface(array $payload)
+    public function IfReturnOfMethodAuthorizerIsAnAuthorizerInterface(array $payload)
     {
         $model = Mockery::mock(Transfer::class);
         $model->shouldReceive([
@@ -127,7 +127,7 @@ class NewTransactionTest extends TestCase
     /**
      * @dataProvider payload
      */
-    public function testIfReturnReturnOfMethodNotifierIsANotifierInterface(array $payload)
+    public function IfReturnReturnOfMethodNotifierIsANotifierInterface(array $payload)
     {
         $model = Mockery::mock(Transfer::class);
         $model->shouldReceive([
@@ -140,7 +140,7 @@ class NewTransactionTest extends TestCase
     /**
      * @dataProvider payload
      */
-    public function testIfReturnOfMethodPayerWalletIsANotifierInterface(array $payload)
+    public function IfReturnOfMethodPayerWalletIsANotifierInterface(array $payload)
     {
         $wallet = Mockery::mock(Wallet::class);
         $wallet->shouldReceive([
@@ -163,7 +163,7 @@ class NewTransactionTest extends TestCase
     /**
      * @dataProvider payload
      */
-    public function testIfReturnOfMethodPayeeWalletIsANotifierInterface(array $payload)
+    public function IfReturnOfMethodPayeeWalletIsANotifierInterface(array $payload)
     {
         $wallet = Mockery::mock(Wallet::class);
         $wallet->shouldReceive([
@@ -186,7 +186,7 @@ class NewTransactionTest extends TestCase
     /**
      * @dataProvider payload
      */
-    public function testExpectExceptionIfStatusParamNotFoundInTransactionStatusClass(array $payload)
+    public function ExpectExceptionIfStatusParamNotFoundInTransactionStatusClass(array $payload)
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(Response::HTTP_UNPROCESSABLE_ENTITY);
