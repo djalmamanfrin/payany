@@ -15,7 +15,7 @@ class Wallet extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
     protected $casts = ['date' => 'Timestamp'];
-    protected $fillable = ['uuid'];
+    protected $fillable = ['user_id', 'uuid'];
 
     public function transactions(): Collection
     {

@@ -12,8 +12,11 @@ class Wallets extends Migration
     {
         Schema::create($this->table, function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('user_id');
             $table->char('uuid', 36);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

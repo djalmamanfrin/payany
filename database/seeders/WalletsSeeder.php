@@ -12,7 +12,6 @@ class WalletsSeeder extends Seeder
     {
         Wallet::factory()
             ->count(10)
-            ->has(User::factory()->count(1))
             ->create();
     }
 }
