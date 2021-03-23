@@ -19,6 +19,11 @@ class WalletRepository implements DebitInterface, CreditInterface, BalanceInterf
         $this->model = $model;
     }
 
+    public function getFill(): array
+    {
+        return $this->model->toArray();
+    }
+
     public function fill(array $values)
     {
         $this->model = $this->model->newInstance($values);
