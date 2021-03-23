@@ -1,48 +1,24 @@
 <?php
 
-namespace PayAny\Http\Controllers\V1;
+namespace PayAny\Http\Controllers\V1\User;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Queue;
 use InvalidArgumentException;
 use PayAny\Http\Controllers\Controller;
-use PayAny\Jobs\ProcessTransaction;
-use PayAny\Models\Transaction;
 use PayAny\Services\Balance;
-use PayAny\Services\Credit;
 use PayAny\Services\Transfer;
 use PayAny\Services\UserActions;
 use Throwable;
 
-class UserController extends Controller
+class UserTransferAction extends Controller
 {
     protected UserActions $service;
 
     public function __construct(UserActions $service)
     {
         $this->service = $service;
-    }
-
-    public function get(int $id): JsonResponse
-    {
-        try {
-            $user = $this->service->get($id);
-            return responseHandler()->success(Response::HTTP_OK, $user);
-        } catch (Throwable $e) {
-            return responseHandler()->error($e);
-        }
-    }
-
-    public function store(Request $request): JsonResponse
-    {
-        try {
-            $this->service->store($request->all());
-            return responseHandler()->success(Response::HTTP_CREATED);
-        } catch (Throwable $e) {
-            return responseHandler()->error($e);
-        }
     }
 
     public function transfer(int $id, Request $request, Transfer $transfer, Balance $balance): JsonResponse
@@ -72,23 +48,6 @@ class UserController extends Controller
             ]);
             $transfer->dispatch();
             return responseHandler()->success(Response::HTTP_CREATED);
-        } catch (Throwable $e) {
-            return responseHandler()->error($e);
-        }
-    }
-
-    public function credit(int $id, Request $request, Credit $credit)
-    {
-        $credit->fill([
-
-        ]);
-    }
-
-    public function balance(int $id, Balance $balance)
-    {
-        try {
-           $userBalance = $this->service->balance($balance, $id);
-            return responseHandler()->success(Response::HTTP_OK, ['balance' => $userBalance]);
         } catch (Throwable $e) {
             return responseHandler()->error($e);
         }
