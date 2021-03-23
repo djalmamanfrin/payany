@@ -4,6 +4,8 @@
 namespace PayAny\Services;
 
 
+use Illuminate\Http\Response;
+use InvalidArgumentException;
 use PayAny\Repositories\API\Interfaces\AuthorizerApiInterface;
 use PayAny\Repositories\DB\Interfaces\AuthorizationInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -29,8 +31,12 @@ class Authorizer
         $this->repository->fill($values);
     }
 
-    public function store()
+    public function store(): bool
     {
-        $this->repository->store();
+        if (empty($this->repository->getFill())) {
+            $error = 'Fill method is empty';
+            throw new InvalidArgumentException($error, Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+        return $this->repository->store();
     }
 }
