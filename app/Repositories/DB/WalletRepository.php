@@ -8,9 +8,9 @@ use PayAny\Models\Transaction;
 use PayAny\Models\WalletTransactions;
 use PayAny\Repositories\DB\Interfaces\CreditInterface;
 use PayAny\Repositories\DB\Interfaces\DebitInterface;
-use PayAny\Repositories\DB\Interfaces\GetFundsInterface;
+use PayAny\Repositories\DB\Interfaces\BalanceInterface;
 
-class WalletRepository implements DebitInterface, CreditInterface, GetFundsInterface
+class WalletRepository implements DebitInterface, CreditInterface, BalanceInterface
 {
     private WalletTransactions $model;
 
@@ -32,7 +32,7 @@ class WalletRepository implements DebitInterface, CreditInterface, GetFundsInter
         }
     }
 
-    public function getFunds(int $walletId): float
+    public function getBalance(int $walletId): float
     {
         return $this->model->newQuery()
             ->where('wallet_id', '=', $walletId)

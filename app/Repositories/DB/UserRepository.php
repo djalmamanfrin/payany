@@ -25,7 +25,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function get(int $id): User
     {
-        return $this->builder()->findOrFail($id)->get();
+        return $this->builder()->findOrFail($id);
     }
 
     public function store(array $params): bool
@@ -39,7 +39,7 @@ class UserRepository implements UserRepositoryInterface
     {
         return $this->builder()
             ->where('id', '=', $id)
-            ->whereRaw('LENGTH(document) = ?', [$this->model::CPF_DOCUMENT_LENGTH])
+            ->whereRaw('LENGTH(document) = ?', [$this->model::CNPJ_DOCUMENT_LENGTH])
             ->exists();
     }
 }
