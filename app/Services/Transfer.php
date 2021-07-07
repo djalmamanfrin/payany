@@ -21,7 +21,7 @@ class Transfer
     {
         $this->repository = $repository;
     }
-    
+
     public function fill(array $values)
     {
         $values['type'] = self::TRANSFER;
@@ -49,17 +49,6 @@ class Transfer
         if (! $isPushed) {
             throw new Exception('Queue not processed', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-//        TODO conversaremos a respeito https://github.com/laravel/lumen-framework/issues/1163
-//        Bus::chain([
-//            new AuthorizeJob($transactionId),
-//            new DebitPayerJob($transactionId),
-//            new CreditPayeeJob($transactionId),
-//            new NotifierPayeeJob($transactionId),
-//        ])->catch(function (Throwable $e) {
-//            throw new Exception('Queue not processed', Response::HTTP_UNPROCESSABLE_ENTITY);
-//        })->name("Processing Transaction: {$transactionId}")
-//        ->dispatch();
-
     }
 
     public function update(int $id, string $status_id): bool
