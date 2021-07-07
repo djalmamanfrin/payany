@@ -1,6 +1,6 @@
 <?php
 
-namespace PayAny\Http\Controllers\V1\User;
+namespace PayAny\Http\Controllers\V1\Transfer;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

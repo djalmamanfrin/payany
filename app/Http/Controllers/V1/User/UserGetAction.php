@@ -1,7 +1,7 @@
 <?php
 
 
-namespace PayAny\Http\Controllers\V1\User;
+namespace PayAny\Http\Controllers\V2;
 
 
 use Illuminate\Http\JsonResponse;
